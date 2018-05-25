@@ -1,0 +1,1 @@
+scalac -bootclasspath C:\Users\cnoiz\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.5.jar -classpath C:\Users\cnoiz\IdeaProjects\othello\target\scala-2.12\classes C:\Users\cnoiz\IdeaProjects\othello\src\main\scala\Main.scala

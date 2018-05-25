@@ -1,0 +1,4 @@
+[error] C:\Users\cnoiz\IdeaProjects\othello\src\main\scala\Main.scala:5:26: ';' expected but '=' found.
+[error]         Board.cells[i][j]=0
+[error]                          ^
+[error] one error found
