@@ -113,9 +113,7 @@ class Game {
   //check weather or not the specified move is valid.
   //the move is specified by the cell on which a stone is put
   //and a direction
-  private def tryToMoveInADirection(row: Int)(col: Int)(offsetY: Int, offsetX: Int): Option[Coordinate]
-
-  = {
+  private def tryToMoveInADirection(row: Int)(col: Int)(offsetY: Int, offsetX: Int): Option[Coordinate] = {
     def proceed(y: Int, x: Int): (Int, Int) = {
       val nextRow = y + offsetY
       val nextCol = x + offsetX
