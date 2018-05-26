@@ -21,7 +21,7 @@ class Game {
 
   private def getAvailableMoves(): List[Coordinate] = {
     (1 until 9).flatMap(row => (1 until 9).flatMap(col => (-1 to 1).flatMap(directionY => (-1 to 1).
-      flatMap(directionX => tryToMoveInADirection(row)(col)(directionY, directionX))))).toList
+      flatMap(directionX => tryToMoveInADirection(row, col, directionY, directionX))))).toList
   }
 
   private def init(): Unit = {
@@ -66,24 +66,60 @@ class Game {
   //activate and commence a game
   def run() = {
     init()
-    setAvailableMoves()
+    showBoard()
     play()
   }
 
-  private def play() = {
-    val choice = choose()
-    showBoard()
+  private def play(): Unit = {
+    var passCnt = 0
+    while (true) {
+      setAvailableMoves()
+      val choice = choose()
+      choice match {
+        case Some(choice) => {
+          passCnt = 0
+          move(choice)
+        }
+        case None => {
+          passCnt += 1
+        }
+      }
+      showBoard()
+      if (isFinished(passCnt)) return
+      turn()
+    }
   }
 
-  private def isFinished: Boolean = {
+  private def turn(): Unit = {
+    player = opponent
+  }
+
+  private def emptyCnt(): Int = {
+    var result = 0
+    (0 until 10).foreach(row => (0 until 10).foreach(col => if (cells(row)(col) == EMPTY) result += 1))
+    result
+  }
+
+  private def isFinished(passCnt: Int): Boolean = {
+    if (passCnt == 2) return true
+    if (emptyCnt() == 0) return true
     return false
   }
 
   //update the available list for the current player
   private def setAvailableMoves() = {
+    def reset(coordinate: Coordinate): Unit = {
+      cells(coordinate.y)(coordinate.x) match {
+        //        case AVAILABLE => cells(coordinate.y)(coordinate.x) = EMPTY
+        case _ =>
+      }
+    }
+
+    //    processAll(reset _)
+
     def setAvailablePosOnBoard(coordinate: Coordinate) = {
       availables = coordinate :: availables
-      cells(coordinate.y)(coordinate.x) = AVAILABLE
+      //      cells(coordinate.y)(coordinate.x) = AVAILABLE
     }
 
     availables = Nil
@@ -101,8 +137,8 @@ class Game {
   }
 
   //make a move. convert the board status to the one after the move
-  private def move(coordinate: Coordinate) = {
-    ???
+  private def move(choice: Coordinate) = {
+    (-1 to 1).foreach(directionY => (-1 to 1).foreach(directionX => reverse(choice, directionY, directionX)))
   }
 
   //get the current opponent
@@ -113,7 +149,7 @@ class Game {
   //check weather or not the specified move is valid.
   //the move is specified by the cell on which a stone is put
   //and a direction
-  private def tryToMoveInADirection(row: Int)(col: Int)(offsetY: Int, offsetX: Int): Option[Coordinate] = {
+  private def tryToMoveInADirection(row: Int, col: Int, offsetY: Int, offsetX: Int): Option[Coordinate] = {
     def proceed(y: Int, x: Int): (Int, Int) = {
       val nextRow = y + offsetY
       val nextCol = x + offsetX
@@ -135,6 +171,27 @@ class Game {
         else None
       }
     }
+  }
+
+  private def reverse(choice: Coordinate, offsetY: Int, offsetX: Int): Unit = {
+    cells(choice.y)(choice.x) = player
+    var opponentStones: List[Coordinate] = Nil
+
+    def proceed(current: Coordinate): Unit = {
+      val nextRow = current.y + offsetY
+      val nextCol = current.x + offsetX
+      if (cells(nextRow)(nextCol) == opponent) {
+        opponentStones = new Coordinate(nextRow, nextCol) :: opponentStones
+        proceed(new Coordinate(nextRow, nextCol))
+      }
+      else if (cells(nextRow)(nextCol) == player) {
+        opponentStones.foreach(coord => cells(coord.y)(coord.x) = player)
+      }
+    }
+
+    if (offsetY == 0 && offsetX == 0) return
+    else proceed(choice)
+    Thread.sleep(50)
   }
 }
 
