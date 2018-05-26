@@ -101,9 +101,9 @@ class Game {
   }
 
   private def isFinished(passCnt: Int): Boolean = {
-    if (passCnt == 2) return true
-    if (emptyCnt() == 0) return true
-    return false
+    if (passCnt == 2) true
+    else if (emptyCnt() == 0) true
+    else false
   }
 
   //update the available list for the current player
@@ -191,7 +191,7 @@ class Game {
 
     if (offsetY == 0 && offsetX == 0) return
     else proceed(choice)
-    Thread.sleep(50)
+    Thread.sleep(100)
   }
 }
 
