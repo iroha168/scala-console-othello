@@ -1,5 +1,5 @@
 object Direction {
-  def values(board: Board): List[Coordinate => Option[Coordinate]] = {
+  val values: List[Coordinate => Option[Coordinate]] = {
     def upper(coordinate: Coordinate): Option[Coordinate] = next(coordinate, -1, 0)
 
     def upperRight(coordinate: Coordinate): Option[Coordinate] = next(coordinate, -1, 1)

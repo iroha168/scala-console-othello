@@ -2,7 +2,7 @@ case class Board private(cellVec: Vector[Vector[Cell]]) {
   def show: String = cellVec.map(cells =>
     cells.map(" " + _.show + " ").mkString("")).mkString("\n") + "\n"
 
-  def isNoChoice(player: Player, opponent: Player, board: Board): Boolean = {
+  def isNoChoice(player: Cell, opponent: Cell, board: Board): Boolean = {
     val manipulator = new Manipulator(board)
     manipulator.isNoChoice(player, opponent)
   }
