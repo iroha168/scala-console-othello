@@ -27,12 +27,8 @@ object Game {
   }
 
   def isFinished(pass: Int, board: Board): Boolean = {
-    if (pass >= 2) {
-      true
-    }
-    else if (board.emptyCnt == 0){
-      true
-    }
+    if (pass >= 2) true
+    else if (board.emptyCnt == 0) true
     else false
   }
 }

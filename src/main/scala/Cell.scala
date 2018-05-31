@@ -2,7 +2,6 @@ sealed trait Cell {
   def show: String
 }
 
-
 case object Black extends Cell {
   override def show: String = "x"
 }

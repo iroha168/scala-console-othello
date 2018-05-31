@@ -3,7 +3,6 @@ class Manipulator(val board: Board) {
     var opponentStones = Seq[Coordinate]()
     board.cellVec(choice.y).updated(choice.x, player)
 
-
     def reverse(nextCell: Coordinate => Option[Coordinate], coordinate: Coordinate, board: Board): Board = {
       nextCell(coordinate) match {
         case Some(coord) => {
@@ -38,28 +37,19 @@ class Manipulator(val board: Board) {
   def canMove(coordinate: Coordinate, player: Cell, opponent: Cell, board: Board): Boolean = {
     def isValidLine(d: Coordinate => Option[Coordinate], coord: Coordinate): Boolean = {
 
-      val a = d(coord) match {
+      d(coord) match {
         case Some(coord) => {
-          if (board.cellVec(coord.y)(coord.x) == opponent) {
-            isValidLine(d, coord)
-          }
-          else if (board.cellVec(coord.y)(coord.x) == player) {
-            true
-          }
-          else {
-            false
-          }
+          if (board.cellVec(coord.y)(coord.x) == opponent) isValidLine(d, coord)
+          else if (board.cellVec(coord.y)(coord.x) == player) true
+          else false
         }
-        case None => {
-          false
-        }
+        case None => false
       }
-      a
     }
 
     if (board.cellVec(coordinate.y)(coordinate.x) != Empty) false
     else {
-      val a = Direction.values.exists(d => {
+      Direction.values.exists(d => {
         d(coordinate) match {
           case Some(coord) => {
             if (board.cellVec(coord.y)(coord.x) == opponent) isValidLine(d, coord)
@@ -68,17 +58,11 @@ class Manipulator(val board: Board) {
           case None => false
         }
       })
-      a
     }
   }
 
-  def isNoChoice(player: Cell, opponent: Cell): Boolean = {
-    var r = !(0 until 8).exists(y => (0 until 8).exists(x => canMove(new Coordinate(y, x), player, opponent, board)))
-    if (r) {
-      val a = 1
-    }
+  def isNoChoice(player: Cell, opponent: Cell): Boolean =
     !(0 until 8).exists(y => (0 until 8).exists(x => canMove(new Coordinate(y, x), player, opponent, board)))
-  }
 
   def getValidMoves(player: Cell, opponent: Cell, board: Board): Seq[Coordinate] = {
     for {
