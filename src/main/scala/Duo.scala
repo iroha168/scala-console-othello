@@ -8,10 +8,6 @@ case class Duo(val board: Board, val player: Player, val opponent: Player, val b
     this.copy(player = opponent, opponent = player)
   }
 
-  def switch(target: Player): Duo = {
-    this.copy(blackPlayer = opponent, whitePlayer = player)
-  }
-
   def playerColor: Cell = {
     if (player == blackPlayer) Black
     else White
