@@ -11,7 +11,7 @@ class Manipulator(val board: Board) {
             reverse(nextCell, coord, board)
           }
           else if (board.cellVec(coord.y)(coord.x) == player) {
-            opponentStones.foldLeft(board)((transitBoard, stone) => transitBoard.update(stone, player))
+            opponentStones.foldLeft(board)((transitBoard, stone) => transitBoard.updateCellColor(stone, player))
           }
           else {
             opponentStones = Nil
@@ -31,7 +31,7 @@ class Manipulator(val board: Board) {
         case None => brd
       }
     })
-    reversedBoard.update(choice, player)
+    reversedBoard.updateCellColor(choice, player)
   }
 
   def canMove(coordinate: Coordinate, player: Cell, opponent: Cell, board: Board): Boolean = {
