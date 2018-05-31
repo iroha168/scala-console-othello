@@ -6,21 +6,19 @@ object Game {
     val disp = new Display()
     var board = Board()
     var pass = 0
-    var duo = new Duo(blackPlayer, whitePlayer, board)
+    var duo = Duo(board, blackPlayer, whitePlayer)
     while (true) {
-      if (board.isNoChoice(color(duo.player), color(duo.opponent), board)) {
-        pass += 1
-      } else {
-        val choice = duo.player.chooseMove(board, color(duo.player), color(duo.opponent))
+      if (board.isNoChoice(duo.playerColor, duo.opponentColor, board)) pass += 1
+      else {
+        pass = 0
+        val choice = duo.player.chooseMove(board, duo.playerColor, duo.opponentColor)
         println(choice)
-        board = duo.player.move(choice, color(duo.player), color(duo.opponent), board)
+        board = duo.player.move(choice, duo.playerColor, duo.opponentColor, board)
         disp.printBoard(board)
       }
-      if (isFinished(pass, board)) {
-        return
-      }
+      if (isFinished(pass, board)) return
       duo = turn(duo)
-      Thread.sleep(500)
+      Thread.sleep(1000)
     }
   }
 
@@ -29,19 +27,13 @@ object Game {
   }
 
   def isFinished(pass: Int, board: Board): Boolean = {
-    if (pass >= 2) true
-    else if (board.emptyCnt == 0) true
+    if (pass >= 2) {
+      true
+    }
+    else if (board.emptyCnt == 0){
+      true
+    }
     else false
-  }
-
-  def switch(target: Player): Player = {
-    if (target == blackPlayer) whitePlayer
-    else blackPlayer
-  }
-
-  def color(target: Player): Cell = {
-    if (target == blackPlayer) Black
-    else White
   }
 }
 
