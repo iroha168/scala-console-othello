@@ -1,4 +1,5 @@
 object Direction {
+
   val values: List[Coordinate => Option[Coordinate]] = {
     def upper(coordinate: Coordinate): Option[Coordinate] = next(coordinate, -1, 0)
 

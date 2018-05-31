@@ -8,6 +8,7 @@ trait Player {
   def move(coordinate: Coordinate, player: Cell, opponent: Cell, board: Board): Board
 }
 
+
 class Cpu() extends Player {
   override def chooseMove(board: Board, player: Cell, opponent: Cell): Coordinate = {
     val manipulator = new Manipulator(board)

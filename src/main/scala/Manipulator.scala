@@ -3,16 +3,16 @@ class Manipulator(val board: Board) {
     var opponentStones = Seq[Coordinate]()
     board.cellVec(choice.y).updated(choice.x, player)
 
-    def reverse(d: Coordinate => Option[Coordinate], coordinate: Coordinate, board: Board): Board = {
-      d(coordinate) match {
+
+    def reverse(nextCell: Coordinate => Option[Coordinate], coordinate: Coordinate, board: Board): Board = {
+      nextCell(coordinate) match {
         case Some(coord) => {
           if (board.cellVec(coord.y)(coord.x) == opponent) {
             opponentStones = coord +: opponentStones
-            reverse(d, coord, board)
+            reverse(nextCell, coord, board)
           }
           else if (board.cellVec(coord.y)(coord.x) == player) {
-            opponentStones.foldLeft(board)((transitBoard, stone) =>
-              Board(transitBoard.cellVec.updated(stone.y, transitBoard.cellVec(stone.y).updated(stone.x, player))))
+            opponentStones.foldLeft(board)((transitBoard, stone) => transitBoard.update(stone, player))
           }
           else {
             opponentStones = Nil

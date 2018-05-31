@@ -13,6 +13,9 @@ case class Board private(cellVec: Vector[Vector[Cell]]) {
     cnt
   }
 
+  def update(coordinate: Coordinate, color: Cell) = {
+    Board(this.cellVec.updated(coordinate.y, this.cellVec(coordinate.y).updated(coordinate.x, color)))
+  }
 }
 
 object Board {

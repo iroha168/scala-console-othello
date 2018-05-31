@@ -3,6 +3,7 @@ case class Duo(val board: Board, val player: Player, val opponent: Player, val b
     player.move(coordinate, playerColoer, opponentrColoer, board)
   }
 
+
   def swap: Duo = {
     this.copy(player = opponent, opponent = player)
   }
