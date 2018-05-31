@@ -14,7 +14,7 @@ object Direction {
 
     def bottomRight(coordinate: Coordinate): Option[Coordinate] = next(coordinate, 1, 1)
 
-    def bottomLeft(coordinate: Coordinate): Option[Coordinate] = next(coordinate, 1, 1)
+    def bottomLeft(coordinate: Coordinate): Option[Coordinate] = next(coordinate, 1, -1)
 
     def next(coordinate: Coordinate, directionY: Int, directionX: Int): Option[Coordinate] = {
       val y = coordinate.y + directionY
