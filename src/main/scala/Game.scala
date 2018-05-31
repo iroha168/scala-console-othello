@@ -1,12 +1,9 @@
 object Game {
-  var blackPlayer: Player = Cpu()
-  var whitePlayer: Player = Cpu()
-
   def start(): Unit = {
     val disp = new Display()
     var board = Board()
     var pass = 0
-    var duo = Duo(board, blackPlayer, whitePlayer)
+    var duo = Duo(board, new Cpu(), new Cpu)
     while (true) {
       if (board.isNoChoice(duo.playerColor, duo.opponentColor, board)) pass += 1
       else {
