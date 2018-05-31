@@ -32,7 +32,7 @@ class Manipulator(val board: Board) {
         case None => brd
       }
     })
-    Board(reversedBoard.cellVec.updated(choice.y, reversedBoard.cellVec(choice.y).updated(choice.x, player)))
+    reversedBoard.update(choice, player)
   }
 
   def canMove(coordinate: Coordinate, player: Cell, opponent: Cell, board: Board): Boolean = {
