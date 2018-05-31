@@ -16,7 +16,6 @@ class Cpu() extends Player {
     availables(choice)
   }
 
-
   override def move(coordinate: Coordinate, player: Cell, opponent: Cell, board: Board): Board = {
     val manipulator = new Manipulator(board)
     if (manipulator.canMove(coordinate, player, opponent, board)) {

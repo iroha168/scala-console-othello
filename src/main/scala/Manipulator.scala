@@ -12,7 +12,7 @@ class Manipulator(val board: Board) {
           }
           else if (board.cellVec(coord.y)(coord.x) == player) {
             opponentStones.foldLeft(board)((transitBoard, stone) =>
-              Board(board.cellVec.updated(stone.y, transitBoard.cellVec(stone.y).updated(stone.x, player))))
+              Board(transitBoard.cellVec.updated(stone.y, transitBoard.cellVec(stone.y).updated(stone.x, player))))
           }
           else {
             opponentStones = Nil
@@ -26,7 +26,7 @@ class Manipulator(val board: Board) {
     val reversedBoard = Direction.values.foldLeft(board)((brd, d) => {
       d(choice) match {
         case Some(coord) => {
-          if (board.cellVec(coord.y)(coord.x) == opponent) reverse(d, choice, board)
+          if (brd.cellVec(coord.y)(coord.x) == opponent) reverse(d, choice, brd)
           else brd
         }
         case None => brd
@@ -37,21 +37,29 @@ class Manipulator(val board: Board) {
 
   def canMove(coordinate: Coordinate, player: Cell, opponent: Cell, board: Board): Boolean = {
     def isValidLine(d: Coordinate => Option[Coordinate], coord: Coordinate): Boolean = {
-      d(coord) match {
+
+      val a = d(coord) match {
         case Some(coord) => {
           if (board.cellVec(coord.y)(coord.x) == opponent) {
             isValidLine(d, coord)
           }
-          if (board.cellVec(coord.y)(coord.x) == player) true
-          else false
+          else if (board.cellVec(coord.y)(coord.x) == player) {
+            true
+          }
+          else {
+            false
+          }
         }
-        case None => false
+        case None => {
+          false
+        }
       }
+      a
     }
 
     if (board.cellVec(coordinate.y)(coordinate.x) != Empty) false
     else {
-      Direction.values.exists(d => {
+      val a = Direction.values.exists(d => {
         d(coordinate) match {
           case Some(coord) => {
             if (board.cellVec(coord.y)(coord.x) == opponent) isValidLine(d, coord)
@@ -60,11 +68,17 @@ class Manipulator(val board: Board) {
           case None => false
         }
       })
+      a
     }
   }
 
-  def isNoChoice(player: Cell, opponent: Cell): Boolean =
+  def isNoChoice(player: Cell, opponent: Cell): Boolean = {
+    var r = !(0 until 8).exists(y => (0 until 8).exists(x => canMove(new Coordinate(y, x), player, opponent, board)))
+    if (r) {
+      val a = 1
+    }
     !(0 until 8).exists(y => (0 until 8).exists(x => canMove(new Coordinate(y, x), player, opponent, board)))
+  }
 
   def getValidMoves(player: Cell, opponent: Cell, board: Board): Seq[Coordinate] = {
     for {
