@@ -1,17 +1,17 @@
 class Manipulator(val board: Board) {
-  def move(choice: Coordinate, player: Cell, opponent: Cell): Board = {
+  def move(choice: Coordinate, playerColor: Cell, opponentColor: Cell): Board = {
     var opponentStones = Seq[Coordinate]()
-    board.cellVec(choice.y).updated(choice.x, player)
+    board.cellVec(choice.y).updated(choice.x, playerColor)
 
     def reverse(nextCell: Coordinate => Option[Coordinate], coordinate: Coordinate, board: Board): Board = {
       nextCell(coordinate) match {
         case Some(coord) => {
-          if (board.cellVec(coord.y)(coord.x) == opponent) {
+          if (board.cellVec(coord.y)(coord.x) == opponentColor) {
             opponentStones = coord +: opponentStones
             reverse(nextCell, coord, board)
           }
-          else if (board.cellVec(coord.y)(coord.x) == player) {
-            opponentStones.foldLeft(board)((transitBoard, stone) => transitBoard.updateCellColor(stone, player))
+          else if (board.cellVec(coord.y)(coord.x) == playerColor) {
+            opponentStones.foldLeft(board)((transitBoard, stone) => transitBoard.updateCellColor(stone, playerColor))
           }
           else {
             opponentStones = Nil
@@ -25,13 +25,13 @@ class Manipulator(val board: Board) {
     val reversedBoard = Direction.values.foldLeft(board)((brd, d) => {
       d(choice) match {
         case Some(coord) => {
-          if (brd.cellVec(coord.y)(coord.x) == opponent) reverse(d, choice, brd)
+          if (brd.cellVec(coord.y)(coord.x) == opponentColor) reverse(d, choice, brd)
           else brd
         }
         case None => brd
       }
     })
-    reversedBoard.updateCellColor(choice, player)
+    reversedBoard.updateCellColor(choice, playerColor)
   }
 
   def canMove(coordinate: Coordinate, player: Cell, opponent: Cell, board: Board): Boolean = {

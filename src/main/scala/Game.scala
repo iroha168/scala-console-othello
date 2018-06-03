@@ -1,6 +1,6 @@
 object Game {
   def start(): Unit = {
-    val disp = new Display()
+    val disp = new ConsoleDisp()
     var board = Board()
     var pass = 0
     var duo = Duo(board, new Cpu(), new Cpu)
